@@ -17,7 +17,7 @@ module SingaporeCPFCalculator
     )
       status == "citizen" || (
       status == "permanent_resident" && (
-      SPRStatus.get(current_date, status_start_date: spr_start_date) == "SPR3" ||
+      SPRStatus.get(current_date, status_start_date: spr_start_date) == :SPR3 ||
         (employee_contribution_type == "full" && employer_contribution_type == "full")
       )
       )

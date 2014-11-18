@@ -15,9 +15,9 @@ module SingaporeCPFCalculator
 
     def get
       case
-      when spr1_start <= current_date && current_date <= spr1_end then "SPR1"
-      when spr2_start <= current_date && current_date <= spr2_end then "SPR2"
-      when spr3_start <= current_date then "SPR3"
+      when spr1_start <= current_date && current_date <= spr1_end then :SPR1
+      when spr2_start <= current_date && current_date <= spr2_end then :SPR2
+      when spr3_start <= current_date then :SPR3
       else
         nil # could not be determined
       end

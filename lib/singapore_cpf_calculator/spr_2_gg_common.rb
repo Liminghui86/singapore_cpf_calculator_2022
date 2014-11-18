@@ -17,7 +17,7 @@ module SingaporeCPFCalculator
       employer_contribution_type:
     )
       status == "permanent_resident" &&
-        SPRStatus.get(current_date, status_start_date: spr_start_date) == "SPR2" &&
+        SPRStatus.get(current_date, status_start_date: spr_start_date) == :SPR2 &&
         employee_contribution_type == "graduated" &&
         employer_contribution_type == "graduated"
     end
