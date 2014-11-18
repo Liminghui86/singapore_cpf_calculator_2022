@@ -1,3 +1,9 @@
+require_relative "spr_2_gg/age_50_below_contribution_calculator"
+require_relative "spr_2_gg/age_50_to_55_contribution_calculator"
+require_relative "spr_2_gg/age_55_to_60_contribution_calculator"
+require_relative "spr_2_gg/age_60_to_65_contribution_calculator"
+require_relative "spr_2_gg/age_65_up_contribution_calculator"
+
 module SingaporeCPFCalculator
   module Year2014
 
@@ -6,26 +12,9 @@ module SingaporeCPFCalculator
     module SPR2GG
 
       extend ResidencyModuleCommon
+      extend SPR2GGCommon
 
       class << self
-        # @param [String] status: ["citizen", "permanent_resident", "foreigner"]
-        # @param [Date] current_date: current date used to determine permanent residency's duration
-        # @param [Date] spr_start_date: date when the permanent residency started
-        # @param [String] employee_contribution_type: ["full", "graduated"]
-        # @param [String] employer_contribution_type: ["full", "graduated"]
-        # @return [true, false]
-        def applies_to?(
-          status:,
-          current_date:,
-          spr_start_date:,
-          employee_contribution_type:,
-          employer_contribution_type:
-        )
-          status == "permanent_resident" &&
-            SPRStatus.get(current_date, status_start_date: spr_start_date) == "SPR2" &&
-            employee_contribution_type == "graduated" &&
-            employer_contribution_type == "graduated"
-        end
 
         private
 
@@ -45,9 +34,3 @@ module SingaporeCPFCalculator
 
   end
 end
-
-require_relative "spr_2_gg/age_50_below_contribution_calculator"
-require_relative "spr_2_gg/age_50_to_55_contribution_calculator"
-require_relative "spr_2_gg/age_55_to_60_contribution_calculator"
-require_relative "spr_2_gg/age_60_to_65_contribution_calculator"
-require_relative "spr_2_gg/age_65_up_contribution_calculator"
