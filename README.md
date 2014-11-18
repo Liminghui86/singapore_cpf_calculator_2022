@@ -45,8 +45,8 @@ Use {SingaporeCPFCalculator.calculate} to calculate for CPF contribution. The me
 ```ruby
   require "singapore_cpf_calculator"
 
-  result = SingaporeCPFCalculator.calculate age: 32,
-                                            date: Date.new(2014, 11, 15),
+  result = SingaporeCPFCalculator.calculate date: Date.new(2014, 11, 15),
+                                            birthdate: Date.new(1982, 2, 18),
                                             residency_status: "permanent_resident",
                                             spr_start_date: Date.new(2014, 11, 15),
                                             ordinary_wages: 700.00,
@@ -62,8 +62,8 @@ Use {SingaporeCPFCalculator.calculate} to calculate for CPF contribution. The me
 
 The following parameters needs to be specified:
 
-  * **age** : age of the employee
   * **date** : current date when the CPF is being calculated for
+  * **birthdate** : birthdate of the employee
   * **residency\_status** : residency status of the employee
     * accepted values : `"citizen"`, `"permanent_resident"`
   * **spr\_start\_date** : date when Singapore Permanent Residency (SPR) started
