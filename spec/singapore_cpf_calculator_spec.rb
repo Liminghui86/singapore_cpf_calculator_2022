@@ -7,8 +7,8 @@ describe SingaporeCPFCalculator do
   describe "#calculate" do
 
     let(:result) {
-      calculator.calculate age: age,
-                           date: date,
+      calculator.calculate date: date,
+                           birthdate: birthdate,
                            residency_status: residency_status,
                            spr_start_date: spr_start_date,
                            ordinary_wages: ordinary_wages,
@@ -18,7 +18,7 @@ describe SingaporeCPFCalculator do
     }
 
     describe "30 years old permanent resident earning $952.00 a month" do
-      let(:age) { 30 }
+      let(:birthdate) { Date.new(1982, 2, 19) }
       let(:date) { Date.new(2014, 11, 15) }
       let(:residency_status) { "permanent_resident" }
       let(:spr_start_date) { Date.new(2011, 11, 14) }
@@ -31,7 +31,7 @@ describe SingaporeCPFCalculator do
     end
 
     describe "30 years old earning $952.00 a month before permanent residency" do
-      let(:age) { 30 }
+      let(:birthdate) { Date.new(1982, 2, 19) }
       let(:date) { Date.new(2014, 11, 15) }
       let(:residency_status) { "permanent_resident" }
       let(:spr_start_date) { Date.new(2015, 11, 14) }

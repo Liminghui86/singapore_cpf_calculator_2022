@@ -40,7 +40,7 @@ module SingaporeCPFCalculator
     end
 
     def spr2_end
-      @spr2_end ||= spr2_start.advance(months: 11).end_of_month
+      @spr2_end ||= spr2_start.dup.advance(months: 11).end_of_month
     end
 
     def spr3_start

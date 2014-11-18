@@ -2,18 +2,10 @@ module SingaporeCPFCalculator
   module Year2014
     module SPR2FG
 
-    # Payment calculator for Singapore's Central Provident Fund for employee's age 50 to 55.
-    class Age50To55ContributionCalculator < Year2014::Base
+      # Payment calculator for Singapore's Central Provident Fund for employee's age 50 to 55.
+      class Age50To55ContributionCalculator < Year2014::Base
 
-        class << self
-
-          # @param [String] age age of the employee
-          # @return [true, false] returns true if the matches.
-          def applies_to?(age)
-            50.0 < age && age <= 55.0
-          end
-
-        end
+        extend Requirements::GroupAbove50To55Years
 
         private
 
@@ -33,7 +25,7 @@ module SingaporeCPFCalculator
           "0.15"
         end
 
-    end
+      end
 
     end
   end

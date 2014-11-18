@@ -4,6 +4,8 @@ module SingaporeCPFCalculator
     # Residency module for Singaporean Citizen and Permanent Residents on their 3rd year.
     module CitizenOrSPR3
 
+      extend ResidencyModuleCommon
+
       class << self
 
         # @param [String] status: ["citizen", "permanent_resident", "foreigner"]
@@ -25,12 +27,6 @@ module SingaporeCPFCalculator
                 (employee_contribution_type == "full" && employer_contribution_type == "full")
             )
           )
-        end
-
-        # @param [Fixnum] age
-        # @return [#calculator] returns the CPF calculator that matches the age.
-        def calculator_for(age)
-          calculators.find { |calculator| calculator.applies_to? age }
         end
 
         private

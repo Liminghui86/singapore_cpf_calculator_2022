@@ -5,6 +5,8 @@ module SingaporeCPFCalculator
     # employer contribution and graduated (G, partial) employee contribution
     module SPR2GG
 
+      extend ResidencyModuleCommon
+
       class << self
         # @param [String] status: ["citizen", "permanent_resident", "foreigner"]
         # @param [Date] current_date: current date used to determine permanent residency's duration
@@ -23,12 +25,6 @@ module SingaporeCPFCalculator
             SPRStatus.get(current_date, status_start_date: spr_start_date) == "SPR2" &&
             employee_contribution_type == "graduated" &&
             employer_contribution_type == "graduated"
-        end
-
-        # @param [Fixnum] age
-        # @return [#calculator] returns the CPF calculator that matches the age.
-        def calculator_for(age)
-          calculators.find { |calculator| calculator.applies_to? age }
         end
 
         private

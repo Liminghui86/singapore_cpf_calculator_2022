@@ -5,8 +5,8 @@ module SingaporeCPFCalculator
     class << self
       # @param [Fixnum] age
       # @return [true, false] returns true if the calculator applies to the employee's age.
-      def applies_to?(_age)
-        raise NotImplementedError, "sub classes needs to implement .applies_to?(age)"
+      def applies_to?(date, birthdate:)
+        AgeGroup.get(date, birthdate: birthdate) == required_age_group
       end
 
       # @param [BigDecimal] ordinary_wages:
@@ -21,6 +21,12 @@ module SingaporeCPFCalculator
       # @return [Hash] returns the total, employee, employer amounts for the CPF contribution
       def calculate(ordinary_wages:, additional_wages:)
         new(ordinary_wages: ordinary_wages, additional_wages: additional_wages).calculate
+      end
+
+      private
+
+      def required_age_group
+        raise NotImplementedError, "sub classes needs to implement .required_age_group"
       end
     end
 

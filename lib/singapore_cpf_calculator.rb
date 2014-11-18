@@ -20,8 +20,8 @@ module SingaporeCPFCalculator
     #   result.total # => 343.00
     #
     #
-    # @param [Fixnum] age: age of the employee as of the specified date
     # @param [Date] date: relevant date when the CPF contribution is being calculated
+    # @param [Date] birthdate:
     # @param [String] residency_status: ["citizen", "permanent_resident"]
     # @param [Date] spr_start_date: date when the employee became a Singapore permanent resident
     # @param [String] employee_contribution_type: ["full", "graduated"]
@@ -37,8 +37,8 @@ module SingaporeCPFCalculator
     #
     # @return [CPFContribution]
     def calculate(
-      age:,
       date:,
+      birthdate:,
       residency_status:,
       spr_start_date: nil,
       ordinary_wages:,
@@ -59,7 +59,7 @@ module SingaporeCPFCalculator
           current_date: date,
           employee_contribution_type: employee_contribution_type,
           employer_contribution_type: employer_contribution_type
-        ).calculator_for(age).
+        ).calculator_for(date, birthdate: birthdate).
         calculate ordinary_wages: ordinary_wages, additional_wages: additional_wages
     end
 
@@ -111,7 +111,10 @@ end
 require_relative "singapore_cpf_calculator/cpf_contribution"
 require_relative "singapore_cpf_calculator/base_calculator"
 require_relative "singapore_cpf_calculator/before_spr"
+require_relative "singapore_cpf_calculator/age_group"
 require_relative "singapore_cpf_calculator/spr_status"
+require_relative "singapore_cpf_calculator/requirements"
 require_relative "singapore_cpf_calculator/year_common"
+require_relative "singapore_cpf_calculator/residency_module_common"
 require_relative "singapore_cpf_calculator/year_2014"
 require_relative "singapore_cpf_calculator/year_2015"

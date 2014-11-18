@@ -19,13 +19,14 @@ module SingaporeCPFCalculator
       )
         status == "permanent_resident" && (
           spr_start_date.year > current_date.year ||
-          ( spr_start_date.year == current_date.year && spr_start_date.month > current_date.month )
+            (spr_start_date.year == current_date.year && spr_start_date.month > current_date.month)
         )
       end
 
-      # @param [Fixnum] age
+      # @param [Object] current_date
+      # @param [Object] birthdate
       # @return [#calculator] returns the CPF calculator that matches the age.
-      def calculator_for(age)
+      def calculator_for(current_date, birthdate:)
         NullContributionCalculator
       end
 
