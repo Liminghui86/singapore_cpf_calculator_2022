@@ -1,5 +1,10 @@
 # SingaporeCPFCalculator
 
+[![Gem Version](https://badge.fury.io/rb/singapore_cpf_calculator.svg)](http://badge.fury.io/rb/singapore_cpf_calculator)
+[![Code Climate](https://codeclimate.com/repos/54640ae86956805be9021a69/badges/b2676acabb7f2cbc7ca4/gpa.svg)](https://codeclimate.com/repos/54640ae86956805be9021a69/feed)
+
+[![Circle CI](https://circleci.com/gh/payrollhero/singapore_cpf_calculator.png?style=badge)](https://circleci.com/gh/payrollhero/singapore_cpf_calculator)
+
 `SingaporeCPFCalculator` is the gem PayrollHero.com created and use to calculate for Singapore's
 Central Provident Fund (CPF) contributions.
 
