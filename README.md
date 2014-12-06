@@ -1,7 +1,8 @@
 # SingaporeCPFCalculator
 
 [![Gem Version](https://badge.fury.io/rb/singapore_cpf_calculator.svg)](http://badge.fury.io/rb/singapore_cpf_calculator)
-[![Code Climate](https://codeclimate.com/repos/54640ae86956805be9021a69/badges/b2676acabb7f2cbc7ca4/gpa.svg)](https://codeclimate.com/repos/54640ae86956805be9021a69/feed)
+[![Code Climate](https://codeclimate.com/github/payrollhero/singapore_cpf_calculator/badges/gpa.svg)](https://codeclimate.com/github/payrollhero/singapore_cpf_calculator)
+[![Test Coverage](https://codeclimate.com/github/payrollhero/singapore_cpf_calculator/badges/coverage.svg)](https://codeclimate.com/github/payrollhero/singapore_cpf_calculator)
 
 [![Circle CI](https://circleci.com/gh/payrollhero/singapore_cpf_calculator.png?style=badge)](https://circleci.com/gh/payrollhero/singapore_cpf_calculator)
 

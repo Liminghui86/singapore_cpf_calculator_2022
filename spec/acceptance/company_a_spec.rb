@@ -29,10 +29,7 @@ describe "Company A" do
       let(:employee_contribution_type) { row["Employee Contribution Type"] }
       let(:employer_contribution_type) { row["Employer Contribution Type"] }
 
-      it {
-        puts result
-        expect(result).to eq expected_result
-      }
+      it { expect(result).to eq expected_result }
     end
   end
 
