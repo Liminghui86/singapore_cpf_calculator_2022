@@ -78,9 +78,9 @@ The following parameters needs to be specified:
       * required if the `residency_status` is `permanent_resident`
     * see: [Year of Singapore Permanent Resident (SPR) Status](http://mycpf.cpf.gov.sg/NR/exeres/3D0D66F9-0085-4FD5-9CB5-35B55C0ADA53,frameless.htm)
   * **ordinary_wages** :
-    * see : [ordinary wages definition](http://mycpf.cpf.gov.sg/NR/exeres/24537890-6D8E-495E-80D5-E5EFEFCA1905,frameless.htm)
+    * see : [ordinary wages definition](https://mycpf.cpf.gov.sg/Employers/EmployerGuides/employer-guides/hiring-employees/cpf-contributions-for-your-employees)
   * **additional_wages** :
-    * see : [additional wages definition](http://mycpf.cpf.gov.sg/Employers/Employers_Guide_to_CPF/Glossary/Glossary_Additional_Wages.htm)
+    * see : [additional wages definition](https://mycpf.cpf.gov.sg/Employers/EmployerGuides/employer-guides/hiring-employees/cpf-contributions-for-your-employees)
   * **employee\_contribution\_type** : type of rates to use for the employee's contribution
     * accepted values : `"full"`, `"graduated"`
     * note: *full* rates is not supported if the employer's contribution type is *graduated*
