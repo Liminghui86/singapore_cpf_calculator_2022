@@ -79,11 +79,11 @@ describe SingaporeCPFCalculator::Year2015::SPR1GG do
 
   describe "calculator_for" do
     let(:calculator) { mod.calculator_for(current_date, birthdate: birthdate) }
-    let(:current_date) { Date.new(2014, 9, 15) }
+    let(:current_date) { Date.new(2015, 9, 15) }
 
     context "when the employee's age is 50 or below" do
       context "lower limit" do
-        let(:birthdate) { Date.new(1996, 8, 15) }
+        let(:birthdate) { Date.new(1997, 8, 15) }
 
         it {
           expect( calculator ).
@@ -92,7 +92,7 @@ describe SingaporeCPFCalculator::Year2015::SPR1GG do
       end
 
       context "upper limit" do
-        let(:birthdate) { Date.new(1964, 9, 15) }
+        let(:birthdate) { Date.new(1965, 9, 15) }
         it {
           expect( calculator ).
             to be SingaporeCPFCalculator::Year2015::SPR1GG::Age50BelowContributionCalculator
@@ -102,7 +102,7 @@ describe SingaporeCPFCalculator::Year2015::SPR1GG do
 
     context "when the employee's age is above 50 to 55" do
       context "lower limit" do
-        let(:birthdate) { Date.new(1963, 8, 15) }
+        let(:birthdate) { Date.new(1964, 8, 15) }
         it {
           expect( calculator ).
             to be SingaporeCPFCalculator::Year2015::SPR1GG::Age50To55ContributionCalculator
@@ -110,7 +110,7 @@ describe SingaporeCPFCalculator::Year2015::SPR1GG do
       end
 
       context "upper limit" do
-        let(:birthdate) { Date.new(1959, 9, 15) }
+        let(:birthdate) { Date.new(1960, 9, 15) }
         it {
           expect( calculator ).
             to be SingaporeCPFCalculator::Year2015::SPR1GG::Age50To55ContributionCalculator
@@ -120,7 +120,7 @@ describe SingaporeCPFCalculator::Year2015::SPR1GG do
 
     context "when the employee's age is above 55 to 60" do
       context "lower limit" do
-        let(:birthdate) { Date.new(1958, 8, 15) }
+        let(:birthdate) { Date.new(1959, 8, 15) }
         it {
           expect( calculator ).
             to be SingaporeCPFCalculator::Year2015::SPR1GG::Age55To60ContributionCalculator
@@ -128,7 +128,7 @@ describe SingaporeCPFCalculator::Year2015::SPR1GG do
       end
 
       context "upper limit" do
-        let(:birthdate) { Date.new(1954, 9, 15) }
+        let(:birthdate) { Date.new(1955, 9, 15) }
         it {
           expect( calculator ).
             to be SingaporeCPFCalculator::Year2015::SPR1GG::Age55To60ContributionCalculator
@@ -138,7 +138,7 @@ describe SingaporeCPFCalculator::Year2015::SPR1GG do
 
     context "when the employee's age is above 60 to 65" do
       context "lower limit" do
-        let(:birthdate) { Date.new(1953, 8, 15) }
+        let(:birthdate) { Date.new(1954, 8, 15) }
         it {
           expect( calculator ).
             to be SingaporeCPFCalculator::Year2015::SPR1GG::Age60To65ContributionCalculator
@@ -146,7 +146,7 @@ describe SingaporeCPFCalculator::Year2015::SPR1GG do
       end
 
       context "upper limit" do
-        let(:birthdate) { Date.new(1949, 9, 15) }
+        let(:birthdate) { Date.new(1950, 9, 15) }
         it {
           expect( calculator ).
             to be SingaporeCPFCalculator::Year2015::SPR1GG::Age60To65ContributionCalculator
@@ -156,7 +156,7 @@ describe SingaporeCPFCalculator::Year2015::SPR1GG do
 
     context "when the employee's age is 65 or above" do
       context "lower limit" do
-        let(:birthdate) { Date.new(1948, 8, 15) }
+        let(:birthdate) { Date.new(1949, 8, 15) }
         it {
           expect( calculator ).
             to be SingaporeCPFCalculator::Year2015::SPR1GG::Age65UpContributionCalculator
@@ -164,7 +164,7 @@ describe SingaporeCPFCalculator::Year2015::SPR1GG do
       end
 
       context "upper limit" do
-        let(:birthdate) { Date.new(1914, 8, 15) }
+        let(:birthdate) { Date.new(1915, 8, 15) }
         it {
           expect( calculator ).
             to be SingaporeCPFCalculator::Year2015::SPR1GG::Age65UpContributionCalculator
