@@ -85,6 +85,7 @@ module SingaporeCPFCalculator
       end
     end
 
+    # TC Rate 1 is
     def tc_rate_1
       raise NotImplementedError, "sub classes needs to implement #tc_rate_1"
     end

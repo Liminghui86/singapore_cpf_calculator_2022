@@ -34,17 +34,10 @@ module SingaporeCPFCalculator
     #   - :group_above_60_to_65_years
     #   - :group_above_65_years
     def get
-      case
-      when age < 50
-        :group_50_years_and_below
-      when 50 <= age && age < 55
-        :group_above_50_to_55_years
-      when 55 <= age && age < 60
-        :group_above_55_to_60_years
-      when 60 <= age && age < 65
-        :group_above_60_to_65_years
-      else # 65 <= age
-        :group_above_65_years
+      if current_date.year <= 2015
+        age_grouping_for_2015_and_earlier
+      else
+        age_grouping_for_2016_and_later
       end
     end
 
@@ -63,6 +56,34 @@ module SingaporeCPFCalculator
         age_by_year
       else
         age_by_year - 1
+      end
+    end
+
+    def age_grouping_for_2015_and_earlier
+      case
+      when age < 50
+        :group_50_years_and_below
+      when 50 <= age && age < 55
+        :group_above_50_to_55_years
+      when 55 <= age && age < 60
+        :group_above_55_to_60_years
+      when 60 <= age && age < 65
+        :group_above_60_to_65_years
+      else # 65 <= age
+        :group_above_65_years
+      end
+    end
+
+    def age_grouping_for_2016_and_later
+      case
+      when age < 55
+        :group_50_years_and_below
+      when 55 <= age && age < 60
+        :group_above_55_to_60_years
+      when 60 <= age && age < 65
+        :group_above_60_to_65_years
+      else # 65 <= age
+        :group_above_65_years
       end
     end
 
