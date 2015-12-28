@@ -11,6 +11,7 @@ module SingaporeCPFCalculator
       # @param [Date] birthdate
       # @return [Symbol] the symbol representation of the age group
       #   - :group_50_years_and_below
+      #   - :group_55_years_and_below
       #   - :group_above_50_to_55_years
       #   - :group_above_55_to_60_years
       #   - :group_above_60_to_65_years
@@ -29,6 +30,7 @@ module SingaporeCPFCalculator
 
     # @return [Symbol] the symbol representation of the age group
     #   - :group_50_years_and_below
+    #   - :group_55_years_and_below
     #   - :group_above_50_to_55_years
     #   - :group_above_55_to_60_years
     #   - :group_above_60_to_65_years
@@ -77,7 +79,7 @@ module SingaporeCPFCalculator
     def age_grouping_for_2016_and_later
       case
       when age < 55
-        :group_50_years_and_below
+        :group_55_years_and_below
       when 55 <= age && age < 60
         :group_above_55_to_60_years
       when 60 <= age && age < 65
