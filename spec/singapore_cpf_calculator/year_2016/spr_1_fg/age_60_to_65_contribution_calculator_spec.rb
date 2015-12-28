@@ -25,37 +25,37 @@ describe SingaporeCPFCalculator::Year2016::SPR1FG::Age60To65ContributionCalculat
 
     context "when the total wages amounts to 50.01" do
       let(:ordinary_wages) { 50.01 }
-      it { expect(result).to equal_cpf total: 4.00, employee: 0.00, employer: 4.00 }
+      it { expect(result).to equal_cpf total: 5.00, employee: 0.00, employer: 5.00 }
     end
 
     context "when the total wages amounts to 500.00" do
       let(:ordinary_wages) { 500.00 }
-      it { expect(result).to equal_cpf total: 43.00, employee: 0.00, employer: 43.00 }
+      it { expect(result).to equal_cpf total: 45.00, employee: 0.00, employer: 45.00 }
     end
 
     context "when the total wages amounts to 500.01" do
       let(:ordinary_wages) { 500.01 }
-      it { expect(result).to equal_cpf total: 43.00, employee: 0.00, employer: 43.00 }
+      it { expect(result).to equal_cpf total: 45.00, employee: 0.00, employer: 45.00 }
     end
 
     context "when the total wages amounts to 749.99" do
       let(:ordinary_wages) { 749.99 }
-      it { expect(result).to equal_cpf total: 101.00, employee: 37.00, employer: 64.00 }
+      it { expect(result).to equal_cpf total: 105.00, employee: 37.00, employer: 68.00 }
     end
 
     context "when the total wages amounts to 750.00" do
       let(:ordinary_wages) { 750.00 }
-      it { expect(result).to equal_cpf total: 101.00, employee: 37.00, employer: 64.00 }
+      it { expect(result).to equal_cpf total: 105.00, employee: 37.00, employer: 68.00 }
     end
 
     context "when the total wages amounts to 5,000.00" do
       let(:ordinary_wages) { 5_000.00 }
-      it { expect(result).to equal_cpf total: 675.00, employee: 250.00, employer: 425.00 }
+      it { expect(result).to equal_cpf total: 700.00, employee: 250.00, employer: 500.00 }
     end
 
     context "when the total wages amounts to 10,000.00" do
       let(:ordinary_wages) { 10_000.00 }
-      it { expect(result).to equal_cpf total: 675.00, employee: 250.00, employer: 425.00 }
+      it { expect(result).to equal_cpf total: 840.00, employee: 300.00, employer: 540.00 }
     end
 
   end

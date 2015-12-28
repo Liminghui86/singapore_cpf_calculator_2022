@@ -55,7 +55,7 @@ describe SingaporeCPFCalculator::Year2016::SPR1FG::Age55BelowContributionCalcula
 
     context "when the total wages amounts to 10,000.00" do
       let(:ordinary_wages) { 10_000.00 }
-      it { expect(result).to equal_cpf total: 1_100.00, employee: 250.00, employer: 850.00 }
+      it { expect(result).to equal_cpf total: 1_320.00, employee: 300.00, employer: 1_020.00 }
     end
 
   end

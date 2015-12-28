@@ -10,11 +10,11 @@ module SingaporeCPFCalculator
         private
 
         def tc_rate_1
-          "0.12"
+          "0.13"
         end
 
         def tc_rate_2
-          "0.17"
+          "0.18"
         end
 
         def ec_rate
