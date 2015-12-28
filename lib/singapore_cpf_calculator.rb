@@ -102,6 +102,7 @@ module SingaporeCPFCalculator
       [
         Year2014,
         Year2015,
+        Year2016
       ]
     end
   end
@@ -123,3 +124,4 @@ require_relative "singapore_cpf_calculator/spr_2_fg_common"
 require_relative "singapore_cpf_calculator/spr_2_gg_common"
 require_relative "singapore_cpf_calculator/year_2014"
 require_relative "singapore_cpf_calculator/year_2015"
+require_relative "singapore_cpf_calculator/year_2016"
