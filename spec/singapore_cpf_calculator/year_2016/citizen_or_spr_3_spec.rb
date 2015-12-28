@@ -92,7 +92,7 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
       end
 
       context "upper limit" do
-        let(:birthdate) { Date.new(1966, 9, 15) }
+        let(:birthdate) { Date.new(1961, 9, 15) }
         it {
           expect( calculator ).
             to be SingaporeCPFCalculator::Year2016::CitizenOrSPR3::Age55BelowContributionCalculator
