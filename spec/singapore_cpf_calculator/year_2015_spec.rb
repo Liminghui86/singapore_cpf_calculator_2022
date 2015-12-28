@@ -15,9 +15,9 @@ describe SingaporeCPFCalculator::Year2015 do
       it { expect( year_module.applies_to? date ).to be_truthy }
     end
 
-    context "when the date falls into the year 2015" do
-      let(:date) { Date.new(2015, 1, 1) }
-      it { expect( year_module.applies_to? date ).to be_truthy }
+    context "when the date falls into the year 2016" do
+      let(:date) { Date.new(2016, 1, 1) }
+      it { expect( year_module.applies_to? date ).to be_falsey }
     end
   end
 
