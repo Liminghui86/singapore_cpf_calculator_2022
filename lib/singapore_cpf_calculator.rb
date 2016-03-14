@@ -12,7 +12,8 @@ module SingaporeCPFCalculator
     #                                             ordinary_wages: 700.00,
     #                                             additional_wages: 252.00,
     #                                             employee_contribution_type: "full",
-    #                                             employer_contribution_type: "full"
+    #                                             employer_contribution_type: "full",
+    #                                             cumulative_ordinary: 0.0,
     #
     #   result # => #<SingaporeCPFCalculator::CPFContribution ...>
     #   result.employee # => 190.00
@@ -34,23 +35,24 @@ module SingaporeCPFCalculator
     #   Additional wages are wage supplements which are not granted wholly and exclusively for the
     #   month, such as annual bonus and leave pay. These and other incentive payments may be made at
     #   intervals of more than a month.
-    #
+    # @param [BigDecimal] cumulative_ordinary:
+    #   The cumulative ordinary wages amount for the year being calculated
     # @return [CPFContribution]
-    def calculate(
-      date:,
-      birthdate:,
-      residency_status:,
-      spr_start_date: nil,
-      ordinary_wages:,
-      additional_wages:,
-      employee_contribution_type: nil,
-      employer_contribution_type: nil
-    )
-      validate_params date: date,
+    def calculate(date:,
+                  birthdate:,
+                  residency_status:,
+                  spr_start_date: nil,
+                  ordinary_wages:,
+                  additional_wages:,
+                  employee_contribution_type: nil,
+                  employer_contribution_type: nil,
+                  cumulative_ordinary: 0.0)
+      validate_params(date: date,
                       employee_contribution_type: employee_contribution_type,
                       employer_contribution_type: employer_contribution_type,
                       residency_status: residency_status,
-                      spr_start_date: spr_start_date
+                      cumulative_ordinary: cumulative_ordinary,
+                      spr_start_date: spr_start_date)
 
       module_for_date(date).
         module_for_residency(
@@ -60,7 +62,7 @@ module SingaporeCPFCalculator
           employee_contribution_type: employee_contribution_type,
           employer_contribution_type: employer_contribution_type
         ).calculator_for(date, birthdate: birthdate).
-        calculate ordinary_wages: ordinary_wages, additional_wages: additional_wages
+        calculate ordinary_wages: ordinary_wages, additional_wages: additional_wages, cumulative_ordinary: cumulative_ordinary
     end
 
     private
@@ -70,7 +72,8 @@ module SingaporeCPFCalculator
       employee_contribution_type:,
       employer_contribution_type:,
       residency_status:,
-      spr_start_date:
+      spr_start_date:,
+      cumulative_ordinary:
     )
       if residency_status == "permanent_resident"
         raise ArgumentError, "spr_start_date: must be set" if spr_start_date.nil?
@@ -86,6 +89,10 @@ module SingaporeCPFCalculator
 
       unless ["citizen", "permanent_resident"].include? residency_status
         raise ArgumentError, "unsupported residency status: #{ residency_status }"
+      end
+
+      if cumulative_ordinary < 0
+        raise ArgumentError, "Yearly cumulative CPF must be a positive number."
       end
     end
 
@@ -122,6 +129,7 @@ require_relative "singapore_cpf_calculator/spr_1_fg_common"
 require_relative "singapore_cpf_calculator/spr_1_gg_common"
 require_relative "singapore_cpf_calculator/spr_2_fg_common"
 require_relative "singapore_cpf_calculator/spr_2_gg_common"
+require_relative 'singapore_cpf_calculator/year_2012_to_2015_aw_ceiling_module'
 require_relative "singapore_cpf_calculator/year_2014"
 require_relative "singapore_cpf_calculator/year_2015"
 require_relative "singapore_cpf_calculator/year_2016"

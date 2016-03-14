@@ -18,9 +18,10 @@ module SingaporeCPFCalculator
       #   month, such as annual bonus and leave pay. These and other incentive payments may be made at
       #   intervals of more than a month.
       #
+      # @param [BigDecimal] cumulative_ordinary
       # @return [Hash] returns the total, employee, employer amounts for the CPF contribution
-      def calculate(ordinary_wages:, additional_wages:)
-        new(ordinary_wages: ordinary_wages, additional_wages: additional_wages).calculate
+      def calculate(ordinary_wages:, additional_wages:, cumulative_ordinary: 0.0)
+        new(ordinary_wages: ordinary_wages, additional_wages: additional_wages, cumulative_ordinary: cumulative_ordinary).calculate
       end
 
       private
@@ -30,9 +31,11 @@ module SingaporeCPFCalculator
       end
     end
 
-    def initialize(ordinary_wages:, additional_wages:)
+    def initialize(ordinary_wages:, additional_wages:, cumulative_ordinary: 0.0)
       @ordinary_wages = ordinary_wages
       @additional_wages = additional_wages
+      @cumulative_ordinary = cumulative_ordinary
+      @additional_wages = clip_additional_wages_based_on_cumulative
     end
 
     # @return [Hash] returns the total, employee, employer amounts for the CPF contribution
@@ -43,7 +46,7 @@ module SingaporeCPFCalculator
 
     private
 
-    attr_reader :ordinary_wages, :additional_wages
+    attr_reader :ordinary_wages, :additional_wages, :cumulative_ordinary
 
     def total_contribution
       @total_contribution ||= calculated_total_contribution.round(0, :half_up)
@@ -59,6 +62,16 @@ module SingaporeCPFCalculator
 
     def total_wages
       ordinary_wages + additional_wages
+    end
+
+    def clip_additional_wages_based_on_cumulative
+      if additional_wage_ceiling.blank?
+        additional_wages
+      elsif cumulative_ordinary >= additional_wage_ceiling
+        d('0.0')
+      else
+        [additional_wages, additional_wage_ceiling - cumulative_ordinary].min
+      end
     end
 
     def calculated_total_contribution
@@ -83,6 +96,11 @@ module SingaporeCPFCalculator
       else # >= $750
         (d(ec_rate) * capped_ordinary_wages) + (d(ec_rate) * additional_wages)
       end
+    end
+
+    # generally applies only to spr3 and citizens
+    def additional_wage_ceiling
+      nil
     end
 
     # TC Rate 1 is

@@ -20,13 +20,13 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
 
     context "when the employee is a citizen" do
       let(:status) { "citizen" }
-      it { expect( result ).to be_truthy }
+      it { expect(result).to be_truthy }
     end
 
     context "when the employee is a permanent resident on their 3rd year" do
       let(:status) { "permanent_resident" }
       let(:spr_start_date) { Date.new(2014, 6, 20) }
-      it { expect( result ).to be_truthy }
+      it { expect(result).to be_truthy }
     end
 
     context "when the employee is a permanent resident on their 2nd year" do
@@ -36,19 +36,19 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
       context "for full employer and employee contribution type" do
         let(:employee_contribution_type) { "full" }
         let(:employer_contribution_type) { "full" }
-        it { expect( result ).to be_truthy }
+        it { expect(result).to be_truthy }
       end
 
       context "for graduated employer and employee contribution type" do
         let(:employee_contribution_type) { "graduated" }
         let(:employer_contribution_type) { "graduated" }
-        it { expect( result ).to be_falsey }
+        it { expect(result).to be_falsey }
       end
 
       context "for full employer and graduated employee contribution type" do
         let(:employee_contribution_type) { "graduated" }
         let(:employer_contribution_type) { "full" }
-        it { expect( result ).to be_falsey }
+        it { expect(result).to be_falsey }
       end
     end
 
@@ -59,22 +59,60 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
       context "for full employer and employee contribution type" do
         let(:employee_contribution_type) { "full" }
         let(:employer_contribution_type) { "full" }
-        it { expect( result ).to be_truthy }
+        it { expect(result).to be_truthy }
       end
 
       context "for graduated employer and employee contribution type" do
         let(:employee_contribution_type) { "graduated" }
         let(:employer_contribution_type) { "graduated" }
-        it { expect( result ).to be_falsey }
+        it { expect(result).to be_falsey }
       end
 
       context "for full employer and graduated employee contribution type" do
         let(:employee_contribution_type) { "graduated" }
         let(:employer_contribution_type) { "full" }
-        it { expect( result ).to be_falsey }
+        it { expect(result).to be_falsey }
       end
     end
 
+  end
+
+  describe "AW Ceiling" do
+    let(:calculator) { mod.calculator_for(current_date, birthdate: birthdate) }
+    let(:current_date) { Date.new(2016, 9, 15) }
+    let(:birthdate) { Date.new(1998, 8, 15) }
+    let(:status) { "permanent_resident" }
+    let(:spr_start_date) { Date.new(2016, 6, 20) }
+    let(:ordinary_wages) { 3_000 }
+    let(:additional_wages) { 2_000 }
+    let(:employee_contribution_type) { "full" }
+    let(:employer_contribution_type) { "full" }
+    subject(:result) {
+      calculator.calculate ordinary_wages: ordinary_wages,
+                           additional_wages: additional_wages,
+                           cumulative_ordinary: cumulative_ordinary
+    }
+
+    context "have earned far less than the AW ceiling cumulative" do
+      let(:cumulative_ordinary) { 2_000 }
+      let(:expected_result) { SingaporeCPFCalculator::CPFContribution.new(total: 1850.0, employee: 1000.0) }
+
+      it { is_expected.to eq expected_result}
+    end
+
+    context "earned 1k under the AW ceiling cumulative" do
+      let(:cumulative_ordinary) { 101_000 }
+      let(:expected_result) { SingaporeCPFCalculator::CPFContribution.new(total: 1480.0, employee: 800.0) }
+
+      it { is_expected.to eq expected_result }
+    end
+
+    context "has earned the wage ceiling" do
+      let(:cumulative_ordinary) { 105_000 }
+      let(:expected_result) { SingaporeCPFCalculator::CPFContribution.new(total: 1110.0, employee: 600.0) }
+
+      it { is_expected.to eq expected_result }
+    end
   end
 
   describe "calculator_for" do
@@ -86,7 +124,7 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
         let(:birthdate) { Date.new(1998, 8, 15) }
 
         it {
-          expect( calculator ).
+          expect(calculator).
             to be SingaporeCPFCalculator::Year2016::CitizenOrSPR3::Age55BelowContributionCalculator
         }
       end
@@ -94,7 +132,7 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
       context "upper limit" do
         let(:birthdate) { Date.new(1961, 9, 15) }
         it {
-          expect( calculator ).
+          expect(calculator).
             to be SingaporeCPFCalculator::Year2016::CitizenOrSPR3::Age55BelowContributionCalculator
         }
       end
@@ -104,7 +142,7 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
       context "lower limit" do
         let(:birthdate) { Date.new(1960, 8, 15) }
         it {
-          expect( calculator ).
+          expect(calculator).
             to be SingaporeCPFCalculator::Year2016::CitizenOrSPR3::Age55To60ContributionCalculator
         }
       end
@@ -112,7 +150,7 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
       context "upper limit" do
         let(:birthdate) { Date.new(1956, 9, 15) }
         it {
-          expect( calculator ).
+          expect(calculator).
             to be SingaporeCPFCalculator::Year2016::CitizenOrSPR3::Age55To60ContributionCalculator
         }
       end
@@ -122,7 +160,7 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
       context "lower limit" do
         let(:birthdate) { Date.new(1955, 8, 15) }
         it {
-          expect( calculator ).
+          expect(calculator).
             to be SingaporeCPFCalculator::Year2016::CitizenOrSPR3::Age60To65ContributionCalculator
         }
       end
@@ -130,7 +168,7 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
       context "upper limit" do
         let(:birthdate) { Date.new(1951, 9, 15) }
         it {
-          expect( calculator ).
+          expect(calculator).
             to be SingaporeCPFCalculator::Year2016::CitizenOrSPR3::Age60To65ContributionCalculator
         }
       end
@@ -140,7 +178,7 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
       context "lower limit" do
         let(:birthdate) { Date.new(1950, 8, 15) }
         it {
-          expect( calculator ).
+          expect(calculator).
             to be SingaporeCPFCalculator::Year2016::CitizenOrSPR3::Age65UpContributionCalculator
         }
       end
@@ -148,7 +186,7 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
       context "upper limit" do
         let(:birthdate) { Date.new(1916, 8, 15) }
         it {
-          expect( calculator ).
+          expect(calculator).
             to be SingaporeCPFCalculator::Year2016::CitizenOrSPR3::Age65UpContributionCalculator
         }
       end

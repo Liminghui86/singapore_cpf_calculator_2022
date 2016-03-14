@@ -1,3 +1,4 @@
+require_relative 'citizen_or_spr_3/citizen_or_spr3_base'
 require_relative "citizen_or_spr_3/age_50_below_contribution_calculator"
 require_relative "citizen_or_spr_3/age_50_to_55_contribution_calculator"
 require_relative "citizen_or_spr_3/age_55_to_60_contribution_calculator"

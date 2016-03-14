@@ -3,7 +3,7 @@ module SingaporeCPFCalculator
     module CitizenOrSPR3
 
       # Payment calculator for Singapore's Central Provident Fund for employee's age 55 to 60.
-      class Age55To60ContributionCalculator < Year2016::Base
+      class Age55To60ContributionCalculator  < CitizenOrSpr3Base
 
         extend Requirements::GroupAbove55To60Years
 

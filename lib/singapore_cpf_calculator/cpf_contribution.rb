@@ -24,5 +24,9 @@ module SingaporeCPFCalculator
       total == other.total && employee == other.employee
     end
 
+    def inspect
+      {total: total.to_s, employee: employee.to_s}.to_json
+    end
+
   end
 end
