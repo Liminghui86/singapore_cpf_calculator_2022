@@ -13,7 +13,8 @@ module SingaporeCPFCalculator
     #                                             additional_wages: 252.00,
     #                                             employee_contribution_type: "full",
     #                                             employer_contribution_type: "full",
-    #                                             cumulative_ordinary: 0.0,
+    #                                             ytd_additional_wages: 20_000,
+    #                                             ytd_ow_subject_to_cpf: 60_000
     #
     #   result # => #<SingaporeCPFCalculator::CPFContribution ...>
     #   result.employee # => 190.00
