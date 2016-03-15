@@ -44,9 +44,10 @@ Or install it yourself as:
 
 ## Usage
 
-Use {SingaporeCPFCalculator.calculate} to calculate for CPF contribution. The method return a
+Use {SingaporeCPFCalculator.calculate} to calculate for CPF contribution. The method returns a
 {SingaporeCPFCalculator::CPFContribution} object responding to {SingaporeCPFCalculator::CPFContribution#employee},
-{SingaporeCPFCalculator::CPFContribution#employer} and {SingaporeCPFCalculator::CPFContribution#total}.
+{SingaporeCPFCalculator::CPFContribution#employer}, {SingaporeCPFCalculator::CPFContribution#total},
+{SingaporeCPFCalculator::CPFContribution#ow_subject_to_cpf} and {SingaporeCPFCalculator::CPFContribution#aw_subject_to_cpf}.
 
 ```ruby
   require "singapore_cpf_calculator"
@@ -58,12 +59,16 @@ Use {SingaporeCPFCalculator.calculate} to calculate for CPF contribution. The me
                                             ordinary_wages: 700.00,
                                             additional_wages: 252.00,
                                             employee_contribution_type: "full",
-                                            employer_contribution_type: "full"
+                                            employer_contribution_type: "full",
+                                            ytd_additional_wages: 20_000,
+                                            ytd_ow_subject_to_cpf: 80_000
 
   result # => #<SingaporeCPFCalculator::CPFContribution ...>
   result.employee # => 190.00
   result.employer # => 153.00
   result.total # => 343.00
+  result.ow_subject_to_cpf # => 700.0 (the ordinary wages which were under the wage cap)
+  result.aw_subject_to_cpf # => 252.0 (the additional wages which were under the additional wage ceiling)
 ```
 
 The following parameters needs to be specified:
@@ -87,6 +92,12 @@ The following parameters needs to be specified:
   * **employer\_contribution\_type** : type of rates to use
     * accepted values : `"full"`, `"graduated"` type of rates to use for the employer's contribution
     * note: *graduated* rates is not supported if the employee's contribution type is *full*
+  * **ytd_additional_wages : Year to Date Additional Wages which were subject to CPF
+    * notes:
+      * this is for calculating the additional wage ceiling.
+  * **ytd_ow_subject_to_cpf: Year to Date Ordinary Wages which were subject to CPF
+    * notes:
+      * this is for calculating the additional wage ceiling.
 
 ## Contributing
 
