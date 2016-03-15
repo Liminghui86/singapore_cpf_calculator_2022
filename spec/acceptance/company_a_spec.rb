@@ -17,7 +17,9 @@ describe "Company A" do
 
       let(:expected_result) {
         SingaporeCPFCalculator::CPFContribution.new total: BigDecimal.new(row["Total CPF$"]),
-                                                    employee: BigDecimal.new(row["Employee CPF$"])
+                                                    employee: BigDecimal.new(row["Employee CPF$"]),
+                                                    ow_subject_to_cpf: BigDecimal.new(row["OW Subject To CPF"]),
+                                                    aw_subject_to_cpf: additional_wages
       }
 
       let(:date) { row["Contribution Date"].to_date }

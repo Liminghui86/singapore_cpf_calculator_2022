@@ -90,28 +90,29 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
     subject(:result) {
       calculator.calculate ordinary_wages: ordinary_wages,
                            additional_wages: additional_wages,
-                           cumulative_ordinary: cumulative_ordinary
+                           ytd_ow_subject_to_cpf: cumulative_ordinary
     }
 
     context "have earned far less than the AW ceiling cumulative" do
       let(:cumulative_ordinary) { 2_000 }
-      let(:expected_result) { SingaporeCPFCalculator::CPFContribution.new(total: 1850.0, employee: 1000.0) }
+      let(:expected_result) do
+        SingaporeCPFCalculator::CPFContribution.new(total: 1850.0,
+                                                    employee: 1000.0,
+                                                    ow_subject_to_cpf: ordinary_wages,
+                                                    aw_subject_to_cpf: additional_wages)
+      end
 
-      it { is_expected.to eq expected_result}
+      it { is_expected.to equal_cpf total: 1850, employee: 1000, ow: ordinary_wages, aw: 2000 }
     end
 
     context "earned 1k under the AW ceiling cumulative" do
-      let(:cumulative_ordinary) { 101_000 }
-      let(:expected_result) { SingaporeCPFCalculator::CPFContribution.new(total: 1480.0, employee: 800.0) }
-
-      it { is_expected.to eq expected_result }
+      let(:cumulative_ordinary) { 98_000 }
+      it { is_expected.to equal_cpf total: 1480, employee: 400, ow: ordinary_wages, aw: 1000 }
     end
 
     context "has earned the wage ceiling" do
       let(:cumulative_ordinary) { 105_000 }
-      let(:expected_result) { SingaporeCPFCalculator::CPFContribution.new(total: 1110.0, employee: 600.0) }
-
-      it { is_expected.to eq expected_result }
+      it { is_expected.to equal_cpf total: 1110, employee: 300, ow: ordinary_wages, aw: 0 }
     end
   end
 

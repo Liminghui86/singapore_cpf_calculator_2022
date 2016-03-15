@@ -27,7 +27,7 @@ describe SingaporeCPFCalculator do
       let(:employee_contribution_type) { nil }
       let(:employer_contribution_type) { nil }
 
-      it { expect(result).to equal_cpf total: 343.00, employee: 190.00, employer: 153.00 }
+      it { expect(result).to equal_cpf total: 343.00, employee: 190.00, employer: 153.00, ow: 700.0, aw: 252.00 }
     end
 
     describe "30 years old earning $952.00 a month before permanent residency" do
