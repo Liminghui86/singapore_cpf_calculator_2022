@@ -18,9 +18,12 @@ module SingaporeCPFCalculator
       #   month, such as annual bonus and leave pay. These and other incentive payments may be made at
       #   intervals of more than a month.
       #
+      # @param [BigDecimal] ytd_additional_wages The year to date additional wages
+      # @param [BigDecimal] ytd_ow_subject_to_cpf The year to date ordinary wages
       # @return [Hash] returns the total, employee, employer amounts for the CPF contribution
-      def calculate(ordinary_wages:, additional_wages:)
-        new(ordinary_wages: ordinary_wages, additional_wages: additional_wages).calculate
+      def calculate(ordinary_wages:, additional_wages:, ytd_additional_wages: 0.0, ytd_ow_subject_to_cpf: 0.0)
+        new(ordinary_wages: ordinary_wages, additional_wages: additional_wages,
+            ytd_ow_subject_to_cpf: ytd_ow_subject_to_cpf, ytd_additional_wages: ytd_additional_wages).calculate
       end
 
       private
@@ -30,20 +33,24 @@ module SingaporeCPFCalculator
       end
     end
 
-    def initialize(ordinary_wages:, additional_wages:)
+    def initialize(ordinary_wages:, additional_wages:, ytd_additional_wages: 0.0, ytd_ow_subject_to_cpf: 0.0)
       @ordinary_wages = ordinary_wages
-      @additional_wages = additional_wages
+      @ytd_ow_subject_to_cpf = ytd_ow_subject_to_cpf
+      @ytd_additional_wages = ytd_additional_wages
+      @additional_wages = clip_additional_wages_based_on_ceiling(additional_wages)
     end
 
     # @return [Hash] returns the total, employee, employer amounts for the CPF contribution
     def calculate
       CPFContribution.new total: total_contribution,
-                          employee: employee_contribution
+                          employee: employee_contribution,
+                          aw_subject_to_cpf: additional_wages,
+                          ow_subject_to_cpf: capped_ordinary_wages
     end
 
     private
 
-    attr_reader :ordinary_wages, :additional_wages
+    attr_reader :ordinary_wages, :additional_wages, :ytd_additional_wages, :ytd_ow_subject_to_cpf
 
     def total_contribution
       @total_contribution ||= calculated_total_contribution.round(0, :half_up)
@@ -59,6 +66,19 @@ module SingaporeCPFCalculator
 
     def total_wages
       ordinary_wages + additional_wages
+    end
+
+    def clip_additional_wages_based_on_ceiling(additional_wages)
+      if additional_wage_ceiling.blank?
+        additional_wages
+      else
+        [additional_wages, calculated_remaining_wage_ceiling].min
+      end
+    end
+
+    def calculated_remaining_wage_ceiling
+      max_remaining = additional_wage_ceiling - ytd_ow_subject_to_cpf - capped_ordinary_wages - ytd_additional_wages
+      [max_remaining, d('0.0')].max
     end
 
     def calculated_total_contribution
@@ -83,6 +103,11 @@ module SingaporeCPFCalculator
       else # >= $750
         (d(ec_rate) * capped_ordinary_wages) + (d(ec_rate) * additional_wages)
       end
+    end
+
+    # generally applies only to spr3 and citizens
+    def additional_wage_ceiling
+      nil
     end
 
     # TC Rate 1 is

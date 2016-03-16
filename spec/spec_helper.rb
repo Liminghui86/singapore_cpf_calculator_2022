@@ -96,20 +96,25 @@ end
 
 RSpec::Matchers.define :equal_cpf do |expected|
   match do |actual|
-    actual == cpf_contribution_for(expected)
+    is_cpf_equal?(actual)
   end
 
   failure_message do |actual|
-    "expected total: #{ actual.total }, employee: #{ actual.employee }\n" +
-      "to match total: #{ expected.fetch(:total) }, employee: #{ expected.fetch(:employee) }"
+    "expected total: #{ actual.inspect }\n" +
+      "to match total: #{ expected.inspect }"
   end
 
   description do
-    "to equal total: #{ expected.fetch(:total) }, employee: #{ expected.fetch(:employee) }"
+    "equal total: #{ expected.inspect }"
   end
 
-  def cpf_contribution_for(expected)
-    SingaporeCPFCalculator::CPFContribution.new total: expected.fetch(:total),
-                                                employee: expected.fetch(:employee)
+  def is_cpf_equal?(actual)
+    total = expected.fetch(:total)
+    employee = expected.fetch(:employee)
+    ow = expected.fetch(:ow, nil)
+    aw = expected.fetch(:aw, nil)
+    total == actual.total && employee = actual.employee &&
+      (!ow.present? || ow == actual.ow_subject_to_cpf) &&
+      (!aw.present? || aw == actual.aw_subject_to_cpf)
   end
 end

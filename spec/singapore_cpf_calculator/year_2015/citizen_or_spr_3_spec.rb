@@ -77,6 +77,41 @@ describe SingaporeCPFCalculator::Year2015::CitizenOrSPR3 do
 
   end
 
+  describe "AW Ceiling" do
+    let(:calculator) { mod.calculator_for(current_date, birthdate: birthdate) }
+    let(:current_date) { Date.new(2015, 9, 15) }
+    let(:birthdate) { Date.new(1998, 8, 15) }
+    let(:status) { "permanent_resident" }
+    let(:spr_start_date) { Date.new(2015, 6, 20) }
+    let(:ordinary_wages) { 3_000 }
+    let(:additional_wages) { 2_000 }
+    let(:employee_contribution_type) { "full" }
+    let(:employer_contribution_type) { "full" }
+    subject(:result) {
+      calculator.calculate ordinary_wages: ordinary_wages,
+                           additional_wages: additional_wages,
+                           ytd_ow_subject_to_cpf: cumulative_ordinary
+    }
+
+    context "have earned far less than the AW ceiling cumulative" do
+      let(:cumulative_ordinary) { 2_000 }
+
+      it { is_expected.to equal_cpf total: 1850, employee: 1000, ow: 3_000, aw: 2000 }
+    end
+
+    context "earned 1k under the AW ceiling cumulative" do
+      let(:cumulative_ordinary) { 81_000 }
+
+      it { is_expected.to equal_cpf total: 1480, employee: 800, ow: 3_000, aw: 1000 }
+    end
+
+    context "has earned the wage ceiling" do
+      let(:cumulative_ordinary) { 86_000 }
+
+      it { is_expected.to equal_cpf total: 1110, employee: 600, ow: 3_000, aw: 0 }
+    end
+  end
+
   describe "calculator_for" do
     let(:calculator) { mod.calculator_for(current_date, birthdate: birthdate) }
     let(:current_date) { Date.new(2015, 9, 15) }

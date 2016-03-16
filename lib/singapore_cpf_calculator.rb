@@ -12,7 +12,9 @@ module SingaporeCPFCalculator
     #                                             ordinary_wages: 700.00,
     #                                             additional_wages: 252.00,
     #                                             employee_contribution_type: "full",
-    #                                             employer_contribution_type: "full"
+    #                                             employer_contribution_type: "full",
+    #                                             ytd_additional_wages: 20_000,
+    #                                             ytd_ow_subject_to_cpf: 60_000
     #
     #   result # => #<SingaporeCPFCalculator::CPFContribution ...>
     #   result.employee # => 190.00
@@ -34,23 +36,28 @@ module SingaporeCPFCalculator
     #   Additional wages are wage supplements which are not granted wholly and exclusively for the
     #   month, such as annual bonus and leave pay. These and other incentive payments may be made at
     #   intervals of more than a month.
-    #
+    # @param [BigDecimal] ytd_additional_wages:
+    #   Cumulative Additional Wages for the year (YTD)
+    # @param [BigDecimal] ytd_ow_subject_to_cpf:
+    #   The Year to Date Ordinary Wages which have been subject to CPF.
     # @return [CPFContribution]
-    def calculate(
-      date:,
-      birthdate:,
-      residency_status:,
-      spr_start_date: nil,
-      ordinary_wages:,
-      additional_wages:,
-      employee_contribution_type: nil,
-      employer_contribution_type: nil
-    )
-      validate_params date: date,
+    def calculate(date:,
+                  birthdate:,
+                  residency_status:,
+                  spr_start_date: nil,
+                  ordinary_wages:,
+                  additional_wages:,
+                  employee_contribution_type: nil,
+                  employer_contribution_type: nil,
+                  ytd_additional_wages: 0.0,
+                  ytd_ow_subject_to_cpf: 0.0)
+      validate_params(date: date,
                       employee_contribution_type: employee_contribution_type,
                       employer_contribution_type: employer_contribution_type,
                       residency_status: residency_status,
-                      spr_start_date: spr_start_date
+                      ytd_additional_wages: ytd_additional_wages,
+                      ytd_ow_subject_to_cpf: ytd_ow_subject_to_cpf,
+                      spr_start_date: spr_start_date)
 
       module_for_date(date).
         module_for_residency(
@@ -60,7 +67,10 @@ module SingaporeCPFCalculator
           employee_contribution_type: employee_contribution_type,
           employer_contribution_type: employer_contribution_type
         ).calculator_for(date, birthdate: birthdate).
-        calculate ordinary_wages: ordinary_wages, additional_wages: additional_wages
+        calculate ordinary_wages: ordinary_wages,
+                  additional_wages: additional_wages,
+                  ytd_additional_wages: ytd_additional_wages,
+                  ytd_ow_subject_to_cpf: ytd_ow_subject_to_cpf
     end
 
     private
@@ -70,7 +80,9 @@ module SingaporeCPFCalculator
       employee_contribution_type:,
       employer_contribution_type:,
       residency_status:,
-      spr_start_date:
+      spr_start_date:,
+      ytd_ow_subject_to_cpf:,
+      ytd_additional_wages:
     )
       if residency_status == "permanent_resident"
         raise ArgumentError, "spr_start_date: must be set" if spr_start_date.nil?
@@ -86,6 +98,14 @@ module SingaporeCPFCalculator
 
       unless ["citizen", "permanent_resident"].include? residency_status
         raise ArgumentError, "unsupported residency status: #{ residency_status }"
+      end
+
+      if ytd_ow_subject_to_cpf < 0
+        raise ArgumentError, "YTD OW must be greater than or equal to 0."
+      end
+
+      if ytd_additional_wages < 0
+        raise ArgumentError, "YTD Additional Wages must be greater than or equal to 0."
       end
     end
 
@@ -122,6 +142,7 @@ require_relative "singapore_cpf_calculator/spr_1_fg_common"
 require_relative "singapore_cpf_calculator/spr_1_gg_common"
 require_relative "singapore_cpf_calculator/spr_2_fg_common"
 require_relative "singapore_cpf_calculator/spr_2_gg_common"
+require_relative 'singapore_cpf_calculator/year_2012_to_2015_aw_ceiling_module'
 require_relative "singapore_cpf_calculator/year_2014"
 require_relative "singapore_cpf_calculator/year_2015"
 require_relative "singapore_cpf_calculator/year_2016"
