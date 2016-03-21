@@ -99,14 +99,6 @@ module SingaporeCPFCalculator
       unless ["citizen", "permanent_resident"].include? residency_status
         raise ArgumentError, "unsupported residency status: #{ residency_status }"
       end
-
-      if ytd_ow_subject_to_cpf < 0
-        raise ArgumentError, "YTD OW must be greater than or equal to 0."
-      end
-
-      if ytd_additional_wages < 0
-        raise ArgumentError, "YTD Additional Wages must be greater than or equal to 0."
-      end
     end
 
     def contribution_types_required?(date, spr_start_date)

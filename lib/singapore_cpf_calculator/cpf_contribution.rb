@@ -12,7 +12,7 @@ module SingaporeCPFCalculator
     # @param [BigDecimal] aw_subject_to_cpf Additional Wages which were subject to CPF
     def initialize(total:, employee:, ow_subject_to_cpf:, aw_subject_to_cpf:)
       @total = total
-      @employee = employee,
+      @employee = employee
       @ow_subject_to_cpf = ow_subject_to_cpf
       @aw_subject_to_cpf = aw_subject_to_cpf
     end
