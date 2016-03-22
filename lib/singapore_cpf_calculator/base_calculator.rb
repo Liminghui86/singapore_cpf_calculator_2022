@@ -74,7 +74,7 @@ module SingaporeCPFCalculator
       ordinary_wages + additional_wages
     end
 
-    def clip_additional_wages_based_on_ceiling()
+    def clip_additional_wages_based_on_ceiling
       unless additional_wage_ceiling.blank?
         @additional_wages = [additional_wages, calculated_remaining_wage_ceiling, estimated_remaining_wage_ceiling].min
       end
