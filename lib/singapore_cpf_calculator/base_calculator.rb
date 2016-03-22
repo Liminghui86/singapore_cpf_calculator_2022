@@ -21,9 +21,11 @@ module SingaporeCPFCalculator
       # @param [BigDecimal] ytd_additional_wages The year to date additional wages
       # @param [BigDecimal] ytd_ow_subject_to_cpf The year to date ordinary wages
       # @return [Hash] returns the total, employee, employer amounts for the CPF contribution
-      def calculate(ordinary_wages:, additional_wages:, ytd_additional_wages: 0.0, ytd_ow_subject_to_cpf: 0.0)
+      def calculate(ordinary_wages:, additional_wages:, ytd_additional_wages: 0.0, ytd_ow_subject_to_cpf: 0.0,
+                    estimated_yearly_ow: 0.0)
         new(ordinary_wages: ordinary_wages, additional_wages: additional_wages,
-            ytd_ow_subject_to_cpf: ytd_ow_subject_to_cpf, ytd_additional_wages: ytd_additional_wages).calculate
+            ytd_ow_subject_to_cpf: ytd_ow_subject_to_cpf, ytd_additional_wages: ytd_additional_wages,
+            estimated_yearly_ow: estimated_yearly_ow).calculate
       end
 
       private
@@ -33,11 +35,14 @@ module SingaporeCPFCalculator
       end
     end
 
-    def initialize(ordinary_wages:, additional_wages:, ytd_additional_wages: 0.0, ytd_ow_subject_to_cpf: 0.0)
+    def initialize(ordinary_wages:, additional_wages:, ytd_additional_wages: 0.0, ytd_ow_subject_to_cpf: 0.0,
+                   estimated_yearly_ow: 0.0)
       @ordinary_wages = ordinary_wages
       @ytd_ow_subject_to_cpf = ytd_ow_subject_to_cpf
       @ytd_additional_wages = ytd_additional_wages
-      @additional_wages = clip_additional_wages_based_on_ceiling(additional_wages)
+      @estimated_yearly_ow = estimated_yearly_ow
+      @additional_wages = additional_wages
+      clip_additional_wages_based_on_ceiling()
     end
 
     # @return [Hash] returns the total, employee, employer amounts for the CPF contribution
@@ -50,7 +55,8 @@ module SingaporeCPFCalculator
 
     private
 
-    attr_reader :ordinary_wages, :additional_wages, :ytd_additional_wages, :ytd_ow_subject_to_cpf
+    attr_reader :ordinary_wages, :additional_wages, :ytd_additional_wages, :ytd_ow_subject_to_cpf,
+                :estimated_yearly_ow
 
     def total_contribution
       @total_contribution ||= calculated_total_contribution.round(0, :half_up)
@@ -68,17 +74,20 @@ module SingaporeCPFCalculator
       ordinary_wages + additional_wages
     end
 
-    def clip_additional_wages_based_on_ceiling(additional_wages)
-      if additional_wage_ceiling.blank?
-        additional_wages
-      else
-        [additional_wages, calculated_remaining_wage_ceiling].min
+    def clip_additional_wages_based_on_ceiling
+      unless additional_wage_ceiling.blank?
+        @additional_wages = [additional_wages, calculated_remaining_wage_ceiling, estimated_remaining_wage_ceiling].min
       end
     end
 
     def calculated_remaining_wage_ceiling
       max_remaining = additional_wage_ceiling - ytd_ow_subject_to_cpf - capped_ordinary_wages - ytd_additional_wages
       [max_remaining, d('0.0')].max
+    end
+
+    def estimated_remaining_wage_ceiling
+      estimated_remaining = additional_wage_ceiling - estimated_yearly_ow - ytd_additional_wages
+      [estimated_remaining, d('0.0')].max
     end
 
     def calculated_total_contribution
