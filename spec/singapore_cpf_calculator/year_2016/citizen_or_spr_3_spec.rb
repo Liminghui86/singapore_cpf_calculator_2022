@@ -114,6 +114,33 @@ describe SingaporeCPFCalculator::Year2016::CitizenOrSPR3 do
       let(:cumulative_ordinary) { 105_000 }
       it { is_expected.to equal_cpf total: 1110, employee: 300, ow: ordinary_wages, aw: 0 }
     end
+
+    describe "using estimated yearly ordinary wages" do
+      subject(:result) {
+        calculator.calculate ordinary_wages: ordinary_wages,
+                             additional_wages: additional_wages,
+                             ytd_ow_subject_to_cpf: cumulative_ordinary,
+                             ytd_additional_wages: ytd_additional_wages,
+                             estimated_yearly_ow: estimated_yearly_ow
+      }
+      let(:cumulative_ordinary) { 0 }
+      let(:ytd_additional_wages) { 0 }
+
+      context "estimated yearly earnings at the threshold" do
+        let(:estimated_yearly_ow) { 102_000 }
+        it { is_expected.to equal_cpf total: 1110, employee: 300, ow: ordinary_wages, aw: 0 }
+      end
+
+      context "estimated yearly earnings 1k below threshold" do
+        let(:estimated_yearly_ow) { 101_000 }
+        it { is_expected.to equal_cpf total: 1480, employee: 800, ow: ordinary_wages, aw: 1000 }
+      end
+
+      context "estimated yearly earnings 3k below threshold" do
+        let(:estimated_yearly_ow) { 99_000 }
+        it { is_expected.to equal_cpf total: 1850, employee: 1000, ow: ordinary_wages, aw: 2000 }
+      end
+    end
   end
 
   describe "calculator_for" do

@@ -50,13 +50,12 @@ module SingaporeCPFCalculator
                   employee_contribution_type: nil,
                   employer_contribution_type: nil,
                   ytd_additional_wages: 0.0,
-                  ytd_ow_subject_to_cpf: 0.0)
+                  ytd_ow_subject_to_cpf: 0.0,
+                  estimated_yearly_ow: 0.0)
       validate_params(date: date,
                       employee_contribution_type: employee_contribution_type,
                       employer_contribution_type: employer_contribution_type,
                       residency_status: residency_status,
-                      ytd_additional_wages: ytd_additional_wages,
-                      ytd_ow_subject_to_cpf: ytd_ow_subject_to_cpf,
                       spr_start_date: spr_start_date)
 
       module_for_date(date).
@@ -70,7 +69,8 @@ module SingaporeCPFCalculator
         calculate ordinary_wages: ordinary_wages,
                   additional_wages: additional_wages,
                   ytd_additional_wages: ytd_additional_wages,
-                  ytd_ow_subject_to_cpf: ytd_ow_subject_to_cpf
+                  ytd_ow_subject_to_cpf: ytd_ow_subject_to_cpf,
+                  estimated_yearly_ow: estimated_yearly_ow
     end
 
     private
@@ -80,9 +80,7 @@ module SingaporeCPFCalculator
       employee_contribution_type:,
       employer_contribution_type:,
       residency_status:,
-      spr_start_date:,
-      ytd_ow_subject_to_cpf:,
-      ytd_additional_wages:
+      spr_start_date:
     )
       if residency_status == "permanent_resident"
         raise ArgumentError, "spr_start_date: must be set" if spr_start_date.nil?
