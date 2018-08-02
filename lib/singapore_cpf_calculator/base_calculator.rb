@@ -62,6 +62,11 @@ module SingaporeCPFCalculator
       @total_contribution ||= calculated_total_contribution.round(0, :half_up)
     end
 
+    # Steps to compute CPF contribution:
+    #   a. Compute the total CPF contribution (rounded to the nearest dollar). An amount of 50 cents
+    #      should be regarded as an additional dollar.
+    #   b. Compute the employee’s share of CPF contribution (cents should be dropped)
+    #   c. Employer’s share = Total contribution – Employee’s share
     def employee_contribution
       @employee_contribution ||= calculated_employee_contribution.round(0, :truncate)
     end
