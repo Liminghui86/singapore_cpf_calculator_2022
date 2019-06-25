@@ -6,6 +6,10 @@ describe SingaporeCPFCalculator do
 
   describe "#calculate" do
 
+    let(:ytd_ow_subject_to_cpf) { 0.0 }
+    let(:ytd_additional_wages) { 0.0 }
+    let(:estimated_yearly_ow) { 0.0 }
+
     let(:result) {
       calculator.calculate date: date,
                            birthdate: birthdate,
@@ -14,8 +18,31 @@ describe SingaporeCPFCalculator do
                            ordinary_wages: ordinary_wages,
                            additional_wages: additional_wages,
                            employee_contribution_type: employee_contribution_type,
-                           employer_contribution_type: employer_contribution_type
+                           employer_contribution_type: employer_contribution_type,
+      ytd_ow_subject_to_cpf: ytd_ow_subject_to_cpf, # year_total_for("ow_subject_to_cpf"),
+      ytd_additional_wages: ytd_additional_wages,   # year_total_for("aw_subject_to_cpf"),
+      estimated_yearly_ow: estimated_yearly_ow      # estimated_yearly_ordinary_wages
     }
+
+    describe "27 years old permanent resident from 2nd day of payroll" do
+      let(:birthdate) { Date.new(1992, 5, 1) }
+      let(:date) { Date.new(2019, 5, 31) }
+      let(:residency_status) { "permanent_resident" }
+      let(:spr_start_date) { Date.new(2019, 5, 2) }
+      let(:ordinary_wages) { 1652.17 }
+      let(:additional_wages) { 87.69 }
+      let(:employee_contribution_type) { "graduated" }
+      let(:employer_contribution_type) { "graduated" }
+
+      it { expect(result).to equal_cpf total: 157.00, employee: 86.00, employer: 71.00, ow: 1652.17, aw: 87.69 }
+
+      describe "with year to date data" do
+        let(:ytd_ow_subject_to_cpf) { BigDecimal("1659.3548") }
+        let(:ytd_additional_wages) { BigDecimal("83.8774") }
+        let(:estimated_yearly_ow) { BigDecimal("22800.0") }
+        it { expect(result).to equal_cpf total: 157.00, employee: 86.00, employer: 71.00, ow: 1652.17, aw: 87.69 }
+      end
+    end
 
     describe "30 years old permanent resident earning $952.00 a month" do
       let(:birthdate) { Date.new(1982, 2, 19) }
