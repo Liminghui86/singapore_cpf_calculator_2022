@@ -41,6 +41,16 @@ describe SingaporeCPFCalculator do
         let(:ytd_additional_wages) { BigDecimal("83.8774") }
         let(:estimated_yearly_ow) { BigDecimal("22800.0") }
         it { expect(result).to equal_cpf total: 157.00, employee: 86.00, employer: 71.00, ow: 1652.17, aw: 87.69 }
+
+        context "if it had received his PR few days before" do
+          let(:spr_start_date) { Date.new(2019, 4, 25) }
+          it { expect(result).to equal_cpf total: 157.00, employee: 86.00, employer: 71.00, ow: 1652.17, aw: 87.69 }
+        end
+
+        context "if it had received his PR few days after" do
+          let(:spr_start_date) { Date.new(2019, 5, 9) }
+          it { expect(result).to equal_cpf total: 157.00, employee: 86.00, employer: 71.00, ow: 1652.17, aw: 87.69 }
+        end
       end
     end
 
