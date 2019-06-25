@@ -147,7 +147,7 @@ module SingaporeCPFCalculator
 
     # precision helper
     def d(val)
-      BigDecimal.new val
+      BigDecimal(val)
     end
 
   end

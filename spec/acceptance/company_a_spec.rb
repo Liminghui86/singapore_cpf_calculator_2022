@@ -16,9 +16,9 @@ describe "Company A" do
       }
 
       let(:expected_result) {
-        SingaporeCPFCalculator::CPFContribution.new total: BigDecimal.new(row["Total CPF$"]),
-                                                    employee: BigDecimal.new(row["Employee CPF$"]),
-                                                    ow_subject_to_cpf: BigDecimal.new(row["OW Subject To CPF"]),
+        SingaporeCPFCalculator::CPFContribution.new total: BigDecimal(row["Total CPF$"]),
+                                                    employee: BigDecimal(row["Employee CPF$"]),
+                                                    ow_subject_to_cpf: BigDecimal(row["OW Subject To CPF"]),
                                                     aw_subject_to_cpf: additional_wages
       }
 
@@ -26,8 +26,8 @@ describe "Company A" do
       let(:birthdate) { row["Birthdate"].to_date }
       let(:residency_status) { row["Residency Status"] }
       let(:spr_start_date) { row["SPR Start Date"].try(:to_date) }
-      let(:ordinary_wages) { BigDecimal.new row["Ordinary Wages"] }
-      let(:additional_wages) { BigDecimal.new row["Additional Wages"] }
+      let(:ordinary_wages) { BigDecimal(row["Ordinary Wages"]) }
+      let(:additional_wages) { BigDecimal(row["Additional Wages"]) }
       let(:employee_contribution_type) { row["Employee Contribution Type"] }
       let(:employer_contribution_type) { row["Employer Contribution Type"] }
 
