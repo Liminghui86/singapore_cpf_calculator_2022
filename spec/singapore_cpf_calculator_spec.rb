@@ -25,7 +25,7 @@ describe SingaporeCPFCalculator do
     }
 
     describe "27 years old permanent resident from 2nd day of payroll" do
-      let(:birthdate) { Date.new(1992, 5, 1) }
+      let(:birthdate) { Date.new(1992, 5, 27) }
       let(:date) { Date.new(2019, 5, 31) }
       let(:residency_status) { "permanent_resident" }
       let(:spr_start_date) { Date.new(2019, 5, 2) }
@@ -35,6 +35,17 @@ describe SingaporeCPFCalculator do
       let(:employer_contribution_type) { "graduated" }
 
       it { expect(result).to equal_cpf total: 157.00, employee: 86.00, employer: 71.00, ow: 1652.17, aw: 87.69 }
+
+      context "ordinary_wages is somehow higher" do
+        let(:ordinary_wages) { 1734.78 }
+        it { expect(result).to equal_cpf total: 164.00, employee: 91.00, employer: 71.00, ow: 1734.78, aw: 87.69 }
+
+        context "may first is not taken into account" do
+          let(:effective_portion) { 0.9565217391304348 }
+          let(:ordinary_wages) { 1734.78 * effective_portion }
+          it { expect(result).to equal_cpf total: 157.00, employee: 87.00, employer: 70.00, ow: 1659.3547826086956, aw: 87.69 }
+        end
+      end
 
       describe "with year to date data" do
         let(:ytd_ow_subject_to_cpf) { BigDecimal("1659.3548") }
