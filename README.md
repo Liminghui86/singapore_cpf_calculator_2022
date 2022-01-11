@@ -1,3 +1,10 @@
+# NOTE
+
+* This is a rip off from [Payrollhero](https://github.com/payrollhero/singapore_cpf_calculator)
+* Updated some numbers to reflect Jan 2022 contribution
+* For internal usage only, as I did not fully update the code to the new CPF rule
+* It will only work to what my organisation needs
+
 # SingaporeCPFCalculator
 
 [![Gem Version](https://badge.fury.io/rb/singapore_cpf_calculator.svg)](http://badge.fury.io/rb/singapore_cpf_calculator)
